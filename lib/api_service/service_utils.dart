@@ -18,6 +18,8 @@ class ServiceUtils {
       var connectivityResult = await (Connectivity().checkConnectivity());
       if (connectivityResult.contains(ConnectivityResult.none)) {
         ScaffoldMessenger.of(rootNavigatorKey.currentState!.context)
+            .clearSnackBars();
+        ScaffoldMessenger.of(rootNavigatorKey.currentState!.context)
             .showSnackBar(
           const SnackBar(
             content:
@@ -31,14 +33,6 @@ class ServiceUtils {
       T response = await apiCall;
 
       onSuccess(response);
-
-      // // Check if response is successful
-      // if (response.statusCode == 200) {
-      //   // Pass the deserialized data (T type) to onSuccess
-      //   onSuccess(response.data as T);
-      // } else {
-      //   onError("Error: ${response.statusMessage}");
-      // }
     } on DioException catch (e) {
       // Handle Dio-specific errors
       if (e.type == DioExceptionType.connectionTimeout) {
@@ -60,8 +54,21 @@ class ServiceUtils {
       } else {
         onError("Unexpected error occurred: ${e.message}");
       }
+      if (!(e.type == DioExceptionType.unknown && e.error is SocketException)) {
+        ScaffoldMessenger.of(rootNavigatorKey.currentState!.context)
+            .showSnackBar(
+          SnackBar(
+            content: Text('${e.message}'),
+          ),
+        );
+      }
     } catch (e) {
       onError("Unexpected error: ${e.toString()}");
+      ScaffoldMessenger.of(rootNavigatorKey.currentState!.context).showSnackBar(
+        const SnackBar(
+          content: Text('Oops.. Something went wrong'),
+        ),
+      );
     }
   }
 }

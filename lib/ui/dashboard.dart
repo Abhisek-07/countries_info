@@ -1,9 +1,7 @@
-import 'package:countries_info/extensions/country_model_ext.dart';
-import 'package:countries_info/models/country_model.dart';
+import 'package:countries_info/models/country_data.dart';
 import 'package:countries_info/states/countries_state.dart';
 import 'package:countries_info/states/countries_state_model.dart';
 import 'package:countries_info/ui/widgets/country_card_widget.dart';
-import 'package:countries_info/ui/widgets/shimmer/country_card_shimmer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -34,6 +32,25 @@ class DashboardScreen extends HookConsumerWidget {
           style: TextStyle(color: Colors.white),
         ),
         actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(
+              Icons.sort,
+              color: Colors.white,
+            ),
+            onSelected: (value) async {
+              if (value == 'sort') {
+                countriesStateNotifier.sortCountryListAlphabetically();
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                const PopupMenuItem<String>(
+                  value: 'sort',
+                  child: Text('Sort Counties By Name'),
+                ),
+              ];
+            },
+          ),
           IconButton(
               iconSize: 24,
               onPressed: () {
@@ -48,225 +65,51 @@ class DashboardScreen extends HookConsumerWidget {
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.only(bottom: 24, left: 24, right: 24),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              const SizedBox(
-                height: 16,
-              ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // const SizedBox(
+            //   height: 16,
+            // ),
 
-              /// germany
-              countriesStateModel.germanyData.when(
-                data: (data) {
-                  Country? country = data?[0];
-                  return CountryCardWidget(
-                      commonName: country?.name?.commonName ?? "common name",
-                      officialName:
-                          country?.name?.officialName ?? "official name",
-                      currencyCode: country.currencyCode,
-                      currencyName:
-                          country.currencyDetails?.name ?? "currency name",
-                      flagUrl: country?.flags?.pngUrl ?? "");
-                },
-                error: (error, stackTrace) {
-                  return Center(
-                    child: ElevatedButton(
-                        onPressed: () {
-                          countriesStateNotifier.getGermanyData();
-                        },
-                        child: const Text("Retry to get Germany Data")),
-                  );
-                },
-                loading: () {
-                  return const CountryCardShimmerWidget();
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-
-              /// india
-              countriesStateModel.indiaData.when(
-                data: (data) {
-                  Country? country = data?[0];
-                  return CountryCardWidget(
-                      commonName: country?.name?.commonName ?? "common name",
-                      officialName:
-                          country?.name?.officialName ?? "official name",
-                      currencyCode: country.currencyCode,
-                      currencyName:
-                          country.currencyDetails?.name ?? "currency name",
-                      flagUrl: country?.flags?.pngUrl ?? "");
-                },
-                error: (error, stackTrace) {
-                  return Center(
-                    child: ElevatedButton(
-                        onPressed: () {
-                          countriesStateNotifier.getIndiaData();
-                        },
-                        child: const Text("Retry to get India Data")),
-                  );
-                },
-                loading: () {
-                  return const CountryCardShimmerWidget();
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-
-              /// china
-              countriesStateModel.chinaData.when(
-                data: (data) {
-                  Country? country = data?[0];
-                  return CountryCardWidget(
-                      commonName: country?.name?.commonName ?? "common name",
-                      officialName:
-                          country?.name?.officialName ?? "official name",
-                      currencyCode: country.currencyCode,
-                      currencyName:
-                          country.currencyDetails?.name ?? "currency name",
-                      flagUrl: country?.flags?.pngUrl ?? "");
-                },
-                error: (error, stackTrace) {
-                  return Center(
-                    child: ElevatedButton(
-                        onPressed: () {
-                          countriesStateNotifier.getChinaData();
-                        },
-                        child: const Text("Retry to get China Data")),
-                  );
-                },
-                loading: () {
-                  return const CountryCardShimmerWidget();
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-
-              /// italy
-              countriesStateModel.italyData.when(
-                data: (data) {
-                  Country? country = data?[0];
-                  return CountryCardWidget(
-                      commonName: country?.name?.commonName ?? "common name",
-                      officialName:
-                          country?.name?.officialName ?? "official name",
-                      currencyCode: country.currencyCode,
-                      currencyName:
-                          country.currencyDetails?.name ?? "currency name",
-                      flagUrl: country?.flags?.pngUrl ?? "");
-                },
-                error: (error, stackTrace) {
-                  return Center(
-                    child: ElevatedButton(
-                        onPressed: () {
-                          countriesStateNotifier.getItalyData();
-                        },
-                        child: const Text("Retry to get Italy Data")),
-                  );
-                },
-                loading: () {
-                  return const CountryCardShimmerWidget();
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-
-              /// korea
-              countriesStateModel.koreaData.when(
-                data: (data) {
-                  Country? country = data?[0];
-                  return CountryCardWidget(
-                      commonName: country?.name?.commonName ?? "common name",
-                      officialName:
-                          country?.name?.officialName ?? "official name",
-                      currencyCode: country.currencyCode,
-                      currencyName:
-                          country.currencyDetails?.name ?? "currency name",
-                      flagUrl: country?.flags?.pngUrl ?? "");
-                },
-                error: (error, stackTrace) {
-                  return Center(
-                    child: ElevatedButton(
-                        onPressed: () {
-                          countriesStateNotifier.getKoreaData();
-                        },
-                        child: const Text("Retry to get Korea Data")),
-                  );
-                },
-                loading: () {
-                  return const CountryCardShimmerWidget();
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-
-              /// lanka
-              countriesStateModel.lankaData.when(
-                data: (data) {
-                  Country? country = data?[0];
-                  return CountryCardWidget(
-                      commonName: country?.name?.commonName ?? "common name",
-                      officialName:
-                          country?.name?.officialName ?? "official name",
-                      currencyCode: country.currencyCode,
-                      currencyName:
-                          country.currencyDetails?.name ?? "currency name",
-                      flagUrl: country?.flags?.pngUrl ?? "");
-                },
-                error: (error, stackTrace) {
-                  return Center(
-                    child: ElevatedButton(
-                        onPressed: () {
-                          countriesStateNotifier.getLankaData();
-                        },
-                        child: const Text("Retry to get Lanka Data")),
-                  );
-                },
-                loading: () {
-                  return const CountryCardShimmerWidget();
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-
-              /// israel
-              countriesStateModel.israelData.when(
-                data: (data) {
-                  Country? country = data?[0];
-                  return CountryCardWidget(
-                      commonName: country?.name?.commonName ?? "common name",
-                      officialName:
-                          country?.name?.officialName ?? "official name",
-                      currencyCode: country.currencyCode,
-                      currencyName:
-                          country.currencyDetails?.name ?? "currency name",
-                      flagUrl: country?.flags?.pngUrl ?? "");
-                },
-                error: (error, stackTrace) {
-                  return Center(
-                    child: ElevatedButton(
-                        onPressed: () {
-                          countriesStateNotifier.getIsraelData();
-                        },
-                        child: const Text("Retry to get Israel Data")),
-                  );
-                },
-                loading: () {
-                  return const CountryCardShimmerWidget();
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-            ],
-          ),
+            /// germany
+            countriesStateModel.countriesData.when(
+              data: (data) {
+                return Flexible(
+                  child: ListView.separated(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      // physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        CountryData? country = data?[index];
+                        return CountryCardWidget(
+                            commonName: country?.commonName ?? "common name",
+                            officialName:
+                                country?.officialName ?? "official name",
+                            currencyCode:
+                                country?.currencyCode ?? "currency code",
+                            currencyName:
+                                country?.currencyName ?? "currency name",
+                            flagUrl: country?.flagUrl ?? "");
+                      },
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(
+                          height: 16,
+                        );
+                      },
+                      itemCount:
+                          countriesStateModel.countriesData.value?.length ?? 0),
+                );
+              },
+              error: (error, stackTrace) {
+                /// Can return any error widget instead of list
+                return const SizedBox.shrink();
+              },
+              loading: () {
+                /// Can return any loader widget instead of list
+                return const SizedBox.shrink();
+              },
+            ),
+          ],
         ),
       )),
     );
