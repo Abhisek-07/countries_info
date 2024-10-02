@@ -6,7 +6,7 @@ part of 'countries_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$countriesStateHash() => r'e61a4a0d101af5697832432ca1a946de26ce7494';
+String _$countriesStateHash() => r'c4fa64e929226d43046d10685858d333963e28d9';
 
 /// See also [CountriesState].
 @ProviderFor(CountriesState)
